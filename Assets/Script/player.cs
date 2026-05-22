@@ -27,9 +27,9 @@ public class player : MonoBehaviour
     [Header("Animation Controller")]
     //player ready
     public RuntimeAnimatorController player_ready_controller;
-    //player idle
-    public RuntimeAnimatorController player_idle_left_controller;
-    public RuntimeAnimatorController player_idle_right_controller;
+    //player idle sword
+    public RuntimeAnimatorController player_idle_left_sword_controller;
+    public RuntimeAnimatorController player_idle_right_sword_controller;
     //player run
     public RuntimeAnimatorController player_run_left_controller;
     public RuntimeAnimatorController player_run_right_controller;
@@ -40,7 +40,7 @@ public class player : MonoBehaviour
     private Animator animator;
 
     [Header("Animation Duration")]
-    private float player_attack_right_duration = 0.4f;
+    private float player_attack_duration = 0.4f;
 
     void Start()
     {
@@ -95,17 +95,18 @@ public class player : MonoBehaviour
         }
     }
 
+    //플레이어가 바라보는 방향에 따른 애니메이션 적용
     void WatchAnimation()
     {
         if(isWatchRight == true)
         {
-            animator.runtimeAnimatorController = player_idle_right_controller;
-            Debug.Log("watchanimation/right");
+            animator.runtimeAnimatorController = player_idle_right_sword_controller;
+            //Debug.Log("watchanimation/right");
         }
         else if(isWatchRight == false)
         {
-            animator.runtimeAnimatorController = player_idle_left_controller;
-            Debug.Log("watchanimation/left");
+            animator.runtimeAnimatorController = player_idle_left_sword_controller;
+            //Debug.Log("watchanimation/left");
         }
         else return;
     }
@@ -152,13 +153,6 @@ public class player : MonoBehaviour
     //공격 관련 함수
     IEnumerator Attack()
     {   
-        /*
-        if(player_attack_right_controller == null || player_attack_left_controller == null)
-        {
-            return;
-        }
-        */
-
         if(doAttack == true){
             if(isWatchRight == true)
             {
@@ -169,9 +163,9 @@ public class player : MonoBehaviour
                 animator.Play(0);
                 //Debug.Log("animator.Play시작");
 
-                yield return new WaitForSeconds(player_attack_right_duration);
+                yield return new WaitForSeconds(player_attack_duration);
 
-                animator.runtimeAnimatorController = player_idle_right_controller;
+                animator.runtimeAnimatorController = player_idle_right_sword_controller;
 
                 yield return null;
                 
@@ -182,8 +176,18 @@ public class player : MonoBehaviour
             else if(isWatchRight == false)
             {
                 animator.runtimeAnimatorController = player_attack_left_controller;
-                EndAttack();
-                animator.runtimeAnimatorController = player_idle_left_controller;
+
+                yield return null;
+
+                animator.Play(0);
+
+                yield return new WaitForSeconds(player_attack_duration);
+
+                animator.runtimeAnimatorController = player_idle_left_sword_controller;
+
+                yield return null;
+                
+                animator.Play(0);
             }
 
             doAttack = false;
