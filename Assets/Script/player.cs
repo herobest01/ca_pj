@@ -9,6 +9,18 @@ public class player : MonoBehaviour
     public float jumpHeight = 2f;
     public float jumpDuration = 1f;
 
+    [Header("Attack Hitbox")]
+    public Vector3 hitbox_pos; //hitbox 생성 위치
+
+    //hitbox 방향, default: right
+    public Vector3 hitbox_scale;
+    public Vector3 hitbox_scale_flip;
+
+    public GameObject hitbox;
+
+    public bool spawn_hitbox = false;
+
+
     private SpriteRenderer spriteRenderer;
 
     private bool isJumping = false;
@@ -45,6 +57,8 @@ public class player : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        hitbox.SetActive(true);
     }
 
     void Update()
@@ -87,11 +101,12 @@ public class player : MonoBehaviour
             UpdateJump();
         }
 
-        //공격기능
+        //공격기능, 공격 히트박스 객체 형성
         if (Input.GetKeyDown(KeyCode.A))
         {
             doAttack = true;
-            StartCoroutine(Attack());
+            StartCoroutine(Attack()); //공격 애니메이션 처리 함수
+            SpawnHitbox(); //hitbox생성 & 제거 함수
         }
     }
 
@@ -194,9 +209,30 @@ public class player : MonoBehaviour
         }
     }
 
-    void EndAttack()
+    public void SpawnHitbox()
     {
-        doAttack = false;
-        return;
+        spawn_hitbox = true;
+        hitbox_scale = hitbox.transform.localScale;
+        
+        if(isWatchRight == true)
+        {
+            hitbox_pos = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.2f, 0f);
+
+            GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
+            Destroy(spawned_hitbox_prefab, 0.5f);
+        }
+        else if(isWatchRight == false)
+        {
+            hitbox_scale_flip = new Vector3(hitbox_scale.x * -1f, hitbox_scale.y, 1f);
+            hitbox_pos = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.1f, 0f);
+
+            GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
+            spawned_hitbox_prefab.transform.localScale = hitbox_scale_flip; //hitbox scale을 hit_box_flip에 있는 속성으로 변경
+            Destroy(spawned_hitbox_prefab, 0.5f);
+        }
+        Debug.Log(hitbox_pos);
+
+        //GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
+        //Destroy(spawned_hitbox_prefab, 0.5f);
     }
 }
