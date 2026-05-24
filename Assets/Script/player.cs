@@ -45,6 +45,11 @@ public class player : MonoBehaviour
     //player run
     public RuntimeAnimatorController player_run_left_controller;
     public RuntimeAnimatorController player_run_right_controller;
+    //player jump
+    public RuntimeAnimatorController player_jump_up_left;
+    public RuntimeAnimatorController player_jump_up_right;
+    public RuntimeAnimatorController player_jump_down_left;
+    public RuntimeAnimatorController player_jump_down_right;
     //player attack
     public RuntimeAnimatorController player_attack_right_controller;
     public RuntimeAnimatorController player_attack_left_controller;
@@ -145,6 +150,15 @@ public class player : MonoBehaviour
         isJumping = true;
         jumpTimer = 0f;
         startPosition = transform.position;
+
+        if (isWatchRight == true)
+        {
+            animator.runtimeAnimatorController = player_jump_up_right;
+        }
+        else
+        {
+            animator.runtimeAnimatorController = player_jump_up_left;
+        }
     }
 
     void UpdateJump()
@@ -156,7 +170,14 @@ public class player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, startPosition.y, transform.position.z);
             isJumping = false;
-            //animator.runtimeAnimatorController = player_idle_controller;
+            if (isWatchRight == true)
+            {
+                animator.runtimeAnimatorController = player_jump_down_right;
+            }
+            else
+            {
+                animator.runtimeAnimatorController = player_jump_down_left;
+            }
         }
         else
         {
@@ -236,3 +257,5 @@ public class player : MonoBehaviour
         //Destroy(spawned_hitbox_prefab, 0.5f);
     }
 }
+
+//lorem

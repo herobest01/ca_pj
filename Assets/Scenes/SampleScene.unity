@@ -261,6 +261,10 @@ MonoBehaviour:
   player_idle_right_sword_controller: {fileID: 9100000, guid: 7e32be9b08e8b2a44a608afff7c2f42c, type: 2}
   player_run_left_controller: {fileID: 9100000, guid: 5134eb946fd8aff42af3b104e7c19815, type: 2}
   player_run_right_controller: {fileID: 9100000, guid: 92c06e10f299e6d41b397f26c1ac828a, type: 2}
+  player_jump_up_left: {fileID: 9100000, guid: 3f727d52f698d0743bbe8b846e423f47, type: 2}
+  player_jump_up_right: {fileID: 9100000, guid: d2e9f90f37fd12b42a752623f5eba188, type: 2}
+  player_jump_down_left: {fileID: 9100000, guid: 24ac9d56a5ef03a4faef845157076bfb, type: 2}
+  player_jump_down_right: {fileID: 9100000, guid: c997ce45b471def489175e48acd36aee, type: 2}
   player_attack_right_controller: {fileID: 9100000, guid: 8b384b702455d0c4983f1e2897a2e7a3, type: 2}
   player_attack_left_controller: {fileID: 9100000, guid: 99f724d85d11e764381394a342a2f70e, type: 2}
 --- !u!50 &363717324
@@ -455,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::camera
   target: {fileID: 363717319}
-  smoothSpeed: 5
+  smoothSpeed: 10
   offset: {x: 0, y: 1.75, z: -10}
 --- !u!1 &1042686298
 GameObject:
