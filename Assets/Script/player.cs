@@ -36,20 +36,28 @@ public class player : MonoBehaviour
     //private float attackDuration = 1f;
     //private float attackTimer = 0f;
 
-    [Header("Animation Controller")]
+    [Header("Animation Controller: ready")]
     //player ready
     public RuntimeAnimatorController player_ready_controller;
+
+    [Header("Animation Controller: idle sword")]
     //player idle sword
     public RuntimeAnimatorController player_idle_left_sword_controller;
     public RuntimeAnimatorController player_idle_right_sword_controller;
+
+    [Header("Animation Controller: run")]
     //player run
     public RuntimeAnimatorController player_run_left_controller;
     public RuntimeAnimatorController player_run_right_controller;
+
+    [Header("Animation Controller: jump")]
     //player jump
     public RuntimeAnimatorController player_jump_up_left;
     public RuntimeAnimatorController player_jump_up_right;
     public RuntimeAnimatorController player_jump_down_left;
     public RuntimeAnimatorController player_jump_down_right;
+
+    [Header("Animation Controller: attack")]
     //player attack
     public RuntimeAnimatorController player_attack_right_controller;
     public RuntimeAnimatorController player_attack_left_controller;
@@ -87,12 +95,6 @@ public class player : MonoBehaviour
             RunAnimator();
         }
 
-        //player가 바라보고있는 방향 판별
-        if (moveDirection.x == 0)
-        {
-            WatchAnimation();
-        }
-
         moveDirection = moveDirection.normalized;
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
@@ -104,6 +106,12 @@ public class player : MonoBehaviour
         if (isJumping)
         {
             UpdateJump();
+        }
+
+        //player가 바라보고있는 방향 판별
+        if (moveDirection.x == 0)
+        {
+            WatchAnimation();
         }
 
         //공격기능, 공격 히트박스 객체 형성
@@ -118,6 +126,12 @@ public class player : MonoBehaviour
     //플레이어가 바라보는 방향에 따른 애니메이션 적용
     void WatchAnimation()
     {
+        if(isJumping == true)
+        {
+            return;
+        }
+        
+
         if(isWatchRight == true)
         {
             animator.runtimeAnimatorController = player_idle_right_sword_controller;
@@ -251,7 +265,6 @@ public class player : MonoBehaviour
             spawned_hitbox_prefab.transform.localScale = hitbox_scale_flip; //hitbox scale을 hit_box_flip에 있는 속성으로 변경
             Destroy(spawned_hitbox_prefab, 0.5f);
         }
-        Debug.Log(hitbox_pos);
 
         //GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
         //Destroy(spawned_hitbox_prefab, 0.5f);

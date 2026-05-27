@@ -14,7 +14,6 @@ public class htibox : MonoBehaviour
         hitbox.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(spawn_hitbox == false) return;

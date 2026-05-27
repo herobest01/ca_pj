@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7024505114680684757}
   m_Layer: 0
   m_Name: attack_hitbox
-  m_TagString: Untagged
+  m_TagString: attack_hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
