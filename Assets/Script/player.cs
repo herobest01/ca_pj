@@ -5,6 +5,17 @@ public class player : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    [Header("Stat")]
+    public int hp = 3;
+
+    [Header("Health")]
+    public GameObject health_1;
+    public GameObject health_2;
+    public GameObject health_3;
+    public GameObject health_bad_1;
+    public GameObject health_bad_2;
+    public GameObject health_bad_3;
+
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
     public float jumpDuration = 1f;
@@ -20,7 +31,6 @@ public class player : MonoBehaviour
 
     public bool spawn_hitbox = false;
 
-
     private SpriteRenderer spriteRenderer;
 
     private bool isJumping = false;
@@ -35,6 +45,9 @@ public class player : MonoBehaviour
     private bool doAttack = false;
     //private float attackDuration = 1f;
     //private float attackTimer = 0f;
+
+    //적과 플레이어 사이 간격에 의한 공격처리를 위한 변수
+    private Transform enemy1_target;
 
     [Header("Animation Controller: ready")]
     //player ready
@@ -67,11 +80,23 @@ public class player : MonoBehaviour
     [Header("Animation Duration")]
     private float player_attack_duration = 0.4f;
 
+    //camera.cs
+    public main_camera camera;
+
     void Start()
     {
         animator = GetComponent<Animator>();
 
-        hitbox.SetActive(true);
+        //체력 초기 설정
+        health_bad_1.SetActive(false);
+        health_bad_2.SetActive(false);
+        health_bad_3.SetActive(false);
+
+        //히트박스 확인을 위한 코드
+        hitbox.SetActive(false);
+
+        //플레이어 공격당했을 때 효과 트리거 설정
+        camera.isAttacked = true;
     }
 
     void Update()
@@ -79,6 +104,15 @@ public class player : MonoBehaviour
         Vector2 moveDirection = Vector2.zero;
 
         if(doAttack == true) return;
+
+        //체력 UI
+        HealthShow();
+
+        //c를 입력해서 체력확인
+        if (Input.GetKey(KeyCode.C))
+        {
+            Debug.Log(hp);
+        }
 
         // 캐릭터 이동 & animator
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -120,6 +154,42 @@ public class player : MonoBehaviour
             doAttack = true;
             StartCoroutine(Attack()); //공격 애니메이션 처리 함수
             SpawnHitbox(); //hitbox생성 & 제거 함수
+        }
+    }
+
+    void HealthShow()
+    {
+        switch (hp)
+        {
+            case 2:
+            health_3.SetActive(false); 
+            health_bad_3.SetActive(true);
+            if (camera.isAttacked == true)
+                {
+                    camera.PlayerAttacked();
+                    camera.isAttacked = false;
+                }
+            return;
+
+            case 1:
+            health_2.SetActive(false);
+            health_bad_2.SetActive(true);
+            if(camera.isAttacked != true)
+                {
+                    camera.PlayerAttacked();
+                    camera.isAttacked = true;
+                }
+            return;
+
+            case 0:
+            health_1.SetActive(false);
+            health_bad_1.SetActive(true);
+            if (camera.isAttacked == true)
+                {
+                    camera.PlayerAttacked();
+                    camera.isAttacked = false;
+                }
+            return;
         }
     }
 

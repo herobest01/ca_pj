@@ -28,6 +28,8 @@ public class EnemyAI : MonoBehaviour
     public RuntimeAnimatorController enemy1_run_controller;
     public RuntimeAnimatorController enemy1_attack_controller;
 
+    public float distance;
+    
     private Animator animator;
 
     private bool isWatchRight;
@@ -48,8 +50,10 @@ public class EnemyAI : MonoBehaviour
     {
         if (target == null) return;
 
+        if(isAttack) return;
+
         //거리 계산
-        float distance = Vector3.Distance(transform.position, target.position);
+        distance = Vector3.Distance(transform.position, target.position);
 
         //플레이어 방향
         Vector3 direction = (target.position - transform.position).normalized;
@@ -78,8 +82,6 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            animator.runtimeAnimatorController = enemy1_idle_controller;
-            isAttack = true;
             Attack();
         }
     }
@@ -89,20 +91,18 @@ public class EnemyAI : MonoBehaviour
     {
         if (Time.time - lastAttackTime >= attackCoolTime)
         {
+            isAttack = true;
+
             animator.runtimeAnimatorController = enemy1_attack_controller;
             lastAttackTime = Time.time;
 
             Invoke(nameof(EndAttack), attackDuration);
-
-            /*
-            // PlayerHealth 스크립트가 있다면 데미지 주기
-            PlayerHealth hp = target.GetComponent<PlayerHealth>();
-
-            if (hp != null)
-            {
-                hp.TakeDamage(damage);
-            }
-            */
+            
+            Invoke(nameof(AttackCount), 0.3f);
+        }
+        else
+        {
+            animator.runtimeAnimatorController = enemy1_idle_controller;
         }
     }
 
@@ -110,6 +110,21 @@ public class EnemyAI : MonoBehaviour
     {
         isAttack = false;
         animator.runtimeAnimatorController = enemy1_idle_controller;
+    }
+
+    //attack 애니메이션 컨트롤러 실행 후 0.3초 후 피격 계산
+    void AttackCount()
+    {
+        player player = target.GetComponent<player>();
+
+        //플레이어와의 거리가 정지거리보다 가까운 경우
+        //플레이어 hp--
+        distance = Vector3.Distance(transform.position, target.position);
+
+        if(distance < stopDistance)
+        {
+            player.hp--;
+        }
     }
 
     //플레이어 공격으로인한 데미지 처리

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - attack_hitbox
+  - Enemy1
   layers:
   - Default
   - TransparentFX
