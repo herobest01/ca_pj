@@ -84,6 +84,11 @@ public class EnemyAI : MonoBehaviour
         {
             Attack();
         }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            Debug.Log("enemy1 hp: " + hp);
+        }
     }
 
     //공격처리

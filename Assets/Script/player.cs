@@ -21,13 +21,13 @@ public class player : MonoBehaviour
     public float jumpDuration = 1f;
 
     [Header("Attack Hitbox")]
+    public GameObject hitbox;
     public Vector3 hitbox_pos; //hitbox 생성 위치
-
     //hitbox 방향, default: right
     public Vector3 hitbox_scale;
     public Vector3 hitbox_scale_flip;
 
-    public GameObject hitbox;
+    
 
     public bool spawn_hitbox = false;
 
@@ -82,6 +82,9 @@ public class player : MonoBehaviour
 
     //camera.cs
     public main_camera camera;
+
+    [Header("Sound Effect")]
+    public AudioClip sword_sound;
 
     void Start()
     {
@@ -153,6 +156,7 @@ public class player : MonoBehaviour
         {
             doAttack = true;
             StartCoroutine(Attack()); //공격 애니메이션 처리 함수
+            AudioSource.PlayClipAtPoint(sword_sound, transform.position);
             SpawnHitbox(); //hitbox생성 & 제거 함수
         }
     }
@@ -324,6 +328,7 @@ public class player : MonoBehaviour
             hitbox_pos = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.2f, 0f);
 
             GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
+            spawned_hitbox_prefab.SetActive(true);
             Destroy(spawned_hitbox_prefab, 0.5f);
         }
         else if(isWatchRight == false)
@@ -333,6 +338,7 @@ public class player : MonoBehaviour
 
             GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
             spawned_hitbox_prefab.transform.localScale = hitbox_scale_flip; //hitbox scale을 hit_box_flip에 있는 속성으로 변경
+            spawned_hitbox_prefab.SetActive(true);
             Destroy(spawned_hitbox_prefab, 0.5f);
         }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7839238310522863741}
   - component: {fileID: 7552703305085053843}
+  - component: {fileID: 5720479710612549623}
   - component: {fileID: 7024505114680684757}
   m_Layer: 0
   m_Name: attack_hitbox
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4834189688891755433}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.305345, y: 0.51253235, z: 0}
+  m_LocalPosition: {x: -6.206573, y: -6.284848, z: 0}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1558020684928294928, guid: 7f8508e790e224f428ab0df37d087e5e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,6 +93,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &5720479710612549623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4834189688891755433}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b12457ba023e3478ac761ffc64d6f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::htibox
+  target: {fileID: 0}
+  hitbox_pos: {x: 0, y: 0, z: 0}
+  hitbox_obj: {fileID: 4834189688891755433}
+  spawn_hitbox: 0
 --- !u!60 &7024505114680684757
 PolygonCollider2D:
   m_ObjectHideFlags: 0
