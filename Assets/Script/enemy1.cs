@@ -28,6 +28,9 @@ public class EnemyAI : MonoBehaviour
     public RuntimeAnimatorController enemy1_run_controller;
     public RuntimeAnimatorController enemy1_attack_controller;
 
+    [Header("Sound Effect")]
+    public AudioClip enemy1_attack_sound;
+
     public float distance;
     
     private Animator animator;
@@ -102,6 +105,8 @@ public class EnemyAI : MonoBehaviour
             lastAttackTime = Time.time;
 
             Invoke(nameof(EndAttack), attackDuration);
+
+            AudioSource.PlayClipAtPoint(enemy1_attack_sound, transform.position);
             
             Invoke(nameof(AttackCount), 0.3f);
         }
@@ -138,16 +143,16 @@ public class EnemyAI : MonoBehaviour
         if(collision.CompareTag("attack_hitbox"))
         {
             hp--;
-
-            if(hp <= 0) Dead();
         }
 
         Debug.Log("enemy1 HP: " + hp);
     }
 
     //적 처치
+    /*
     void Dead()
     {
         Destroy(this);
     }
+    */
 }
