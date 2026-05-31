@@ -27,16 +27,20 @@ public class EnemyAI : MonoBehaviour
     public RuntimeAnimatorController enemy1_idle_controller;
     public RuntimeAnimatorController enemy1_run_controller;
     public RuntimeAnimatorController enemy1_attack_controller;
+    public RuntimeAnimatorController enemy1_hurt_controller;
+
+    private Animator animator;
 
     [Header("Sound Effect")]
     public AudioClip enemy1_attack_sound;
 
     public float distance;
-    
-    private Animator animator;
 
     private bool isWatchRight;
     private bool isAttack = false;
+
+    //hurt controller
+    private bool isHurt = false;
 
     void Start()
     {
@@ -51,9 +55,9 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (target == null) return;
-
+        if(target == null) return;
         if(isAttack) return;
+        if(isHurt) return;
 
         //거리 계산
         distance = Vector3.Distance(transform.position, target.position);
@@ -143,16 +147,17 @@ public class EnemyAI : MonoBehaviour
         if(collision.CompareTag("attack_hitbox"))
         {
             hp--;
+            animator.runtimeAnimatorController = enemy1_hurt_controller;
+
+            isHurt = true;
+            Invoke(nameof(HurtAnimation), 0.3f);
         }
 
         Debug.Log("enemy1 HP: " + hp);
     }
 
-    //적 처치
-    /*
-    void Dead()
+    void HurtAnimation()
     {
-        Destroy(this);
+        isHurt = false;
     }
-    */
 }

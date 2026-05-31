@@ -8,11 +8,13 @@ public class gamemanager : MonoBehaviour
     public GameObject stage3_background;
 
     [Header("Enemys")]
+    public GameObject player;
     public GameObject enemy1;
-    //public GameObject enemy2;
+    public GameObject enemy2;
     //public GameObject enemy3;
 
     private int now_stage;
+    private bool enemy2_isSummon = true;
 
 
     void Start()
@@ -21,6 +23,8 @@ public class gamemanager : MonoBehaviour
 
         stage2_background.SetActive(false);
         stage3_background.SetActive(false);
+
+        //enemy2.SetActive(false);
     }
 
     void Update()
@@ -39,7 +43,14 @@ public class gamemanager : MonoBehaviour
         //---------- 2스테이지 ----------
         else if(now_stage == 2)
         {
-            
+            enemy2 enemy2_sc = enemy2.GetComponent<enemy2>();
+
+            //소환시작
+            if(enemy2_isSummon == true)
+            {
+                enemy2_sc.Summon();
+            }
+            enemy2_isSummon = false;
         }
 
         //변수 확인
@@ -47,12 +58,29 @@ public class gamemanager : MonoBehaviour
         {
             Debug.Log("Now stage: " + now_stage);
         }
+
+        //바로가기
+        if (Input.GetKey(KeyCode.I))
+        {
+            now_stage = 1;
+        }
+        else if (Input.GetKey(KeyCode.O))
+        {
+            now_stage = 2;
+        }
+        else if (Input.GetKey(KeyCode.P))
+        {
+            now_stage = 3;
+        }
     }
 
     //stage1 -> stage2
     void Stage1toStage2()
     {
+        player player_sc = player.GetComponent<player>();
+
         now_stage++;
+        player_sc.hp = 3;
 
         //비활성화 요소
         enemy1.SetActive(false);
