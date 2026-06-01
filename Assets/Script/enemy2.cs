@@ -10,12 +10,12 @@ public class enemy2 : MonoBehaviour
     private Transform target;
 
     [Header("Movement")]
-    public float moveSpeed = 3f;
-    public float stopDistance = 1.5f;
+    public float moveSpeed = 1.7f;
+    public float stopDistance = 1.3f;
 
     [Header("Attack")]
     //공격관련수치
-    public float attackCoolTime = 1f;
+    public float attackCoolTime = 5f;
     public int damage = 1;
     private float lastAttackTime;
     private float attackDuration = 1f;
@@ -27,6 +27,7 @@ public class enemy2 : MonoBehaviour
     public RuntimeAnimatorController enemy2_idle_controller;
     public RuntimeAnimatorController enemy2_run_controller;
     public RuntimeAnimatorController enemy2_attack_controller;
+    public RuntimeAnimatorController enemy2_hurt_controller;
 
     //[Header("Sound Effect")]
     //public AudioClip enemy2_attack_sound;
@@ -36,6 +37,7 @@ public class enemy2 : MonoBehaviour
     public GameObject enemy2_prefab;
     public int spawn_max = 15;
     public int spawn_count = 0;
+    public int death_count = 0;
 
     private Animator animator;
 
@@ -59,6 +61,8 @@ public class enemy2 : MonoBehaviour
         if (target == null) return;
 
         if(isAttack) return;
+
+        if(hp <= 0) return; 
 
         //거리 계산
         distance = Vector3.Distance(transform.position, target.position);
@@ -160,9 +164,16 @@ public class enemy2 : MonoBehaviour
     {
         if(collision.CompareTag("attack_hitbox"))
         {
-            hp--;
-        }
+            animator.runtimeAnimatorController = enemy2_hurt_controller;
+            Invoke(nameof(HurtAnimation), 0.21f);
 
-        Debug.Log("enemy1 HP: " + hp);
+            hp--;
+            death_count++;
+        }
+    }
+
+    void HurtAnimation()
+    {
+        Destroy(enemy2_prefab);
     }
 }

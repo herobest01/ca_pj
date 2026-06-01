@@ -165,35 +165,56 @@ public class player : MonoBehaviour
     {
         switch (hp)
         {
-            case 2:
-            health_3.SetActive(false); 
+            case 3: //풀피
+            health_1.SetActive(true);
+            health_2.SetActive(true);
+            health_3.SetActive(true);
+            health_bad_1.SetActive(false);
+            health_bad_2.SetActive(false);
+            health_bad_3.SetActive(false);
+            break;
+
+            case 2: //health3 제거
+            health_1.SetActive(true);
+            health_2.SetActive(true);
+            health_3.SetActive(false);
+            health_bad_1.SetActive(false);
+            health_bad_2.SetActive(false);
             health_bad_3.SetActive(true);
             if (camera.isAttacked == true)
                 {
                     camera.PlayerAttacked();
                     camera.isAttacked = false;
                 }
-            return;
+            break;
 
-            case 1:
+            case 1: //health2 제거
+            health_1.SetActive(true);
             health_2.SetActive(false);
+            health_3.SetActive(false);
+            health_bad_1.SetActive(false);
             health_bad_2.SetActive(true);
+            health_bad_3.SetActive(true);
             if(camera.isAttacked != true)
                 {
                     camera.PlayerAttacked();
                     camera.isAttacked = true;
                 }
-            return;
+            break;
 
             case 0:
             health_1.SetActive(false);
+            health_2.SetActive(false);
+            health_3.SetActive(false);
             health_bad_1.SetActive(true);
+            health_bad_2.SetActive(true);
+            health_bad_3.SetActive(true);
             if (camera.isAttacked == true)
                 {
                     camera.PlayerAttacked();
                     camera.isAttacked = false;
                 }
-            return;
+            break;
         }
     }
 
