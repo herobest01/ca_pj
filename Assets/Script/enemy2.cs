@@ -29,8 +29,11 @@ public class enemy2 : MonoBehaviour
     public RuntimeAnimatorController enemy2_attack_controller;
     public RuntimeAnimatorController enemy2_hurt_controller;
 
-    //[Header("Sound Effect")]
-    //public AudioClip enemy2_attack_sound;
+    [Header("Gamemanager")]
+    public GameObject gamemanager;
+
+    [Header("Sound Effect")]
+    public AudioClip enemy2_attack_sound;
 
     //15마리 소환관련
     [Header("Spawn")]
@@ -62,7 +65,7 @@ public class enemy2 : MonoBehaviour
 
         if(isAttack) return;
 
-        if(hp <= 0) return; 
+        if(hp <= 0) return;
 
         //거리 계산
         distance = Vector3.Distance(transform.position, target.position);
@@ -96,11 +99,6 @@ public class enemy2 : MonoBehaviour
         {
             Attack();
         }
-
-        if (Input.GetKey(KeyCode.V))
-        {
-            Debug.Log("enemy2 hp: " + hp);
-        }
     }
 
     public void Summon()
@@ -112,7 +110,6 @@ public class enemy2 : MonoBehaviour
     }
     void SummonStart()
     {
-        Debug.Log("enemy2:"+ spawn_count +"번째");
         Vector3 spawnPos = new Vector3(-7.7f, -3f, 0f);
         Instantiate(enemy2_prefab, spawnPos, Quaternion.identity);
     }
@@ -128,7 +125,7 @@ public class enemy2 : MonoBehaviour
 
             Invoke(nameof(EndAttack), attackDuration);
 
-            //AudioSource.PlayClipAtPoint(enemy1_attack_sound, transform.position);
+            AudioSource.PlayClipAtPoint(enemy2_attack_sound, transform.position);
             
             Invoke(nameof(AttackCount), 0.3f);
         }
@@ -168,12 +165,13 @@ public class enemy2 : MonoBehaviour
             Invoke(nameof(HurtAnimation), 0.21f);
 
             hp--;
-            death_count++;
         }
     }
 
     void HurtAnimation()
     {
         Destroy(enemy2_prefab);
+        
+        Debug.Log("deathcount: " + death_count);
     }
 }

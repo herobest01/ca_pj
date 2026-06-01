@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4927656776220379210}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5, y: -7.13, z: 0}
+  m_LocalPosition: {x: 118.23105, y: -41.010452, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,6 +118,8 @@ MonoBehaviour:
   enemy2_run_controller: {fileID: 9100000, guid: 624f425d41759da4889b719811cc8cc9, type: 2}
   enemy2_attack_controller: {fileID: 9100000, guid: b05e8f6087595914bb93e9bf2fcc3137, type: 2}
   enemy2_hurt_controller: {fileID: 9100000, guid: 1ccf6c5b0d36a1242b7ed7b635fe6a22, type: 2}
+  gamemanager: {fileID: 0}
+  enemy2_attack_sound: {fileID: 8300000, guid: ef18a5a7071e4a54ba749b93057e0864, type: 3}
   enemy2_prefab: {fileID: 4927656776220379210}
   spawn_max: 15
   spawn_count: 0

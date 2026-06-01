@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class gamemanager : MonoBehaviour
 {
@@ -13,8 +14,12 @@ public class gamemanager : MonoBehaviour
     public GameObject enemy2;
     //public GameObject enemy3;
 
+    [Header("Stage2 Death Count")]
+    public TextMeshProUGUI stage2_deathcount_text;
+
     private int now_stage;
     private bool enemy2_isSummon = true;
+    public int enemy2_left = 15;
 
 
     void Start()
@@ -24,7 +29,7 @@ public class gamemanager : MonoBehaviour
         stage2_background.SetActive(false);
         stage3_background.SetActive(false);
 
-        //enemy2.SetActive(false);
+        stage2_deathcount_text.text = "";
     }
 
     void Update()
@@ -44,6 +49,8 @@ public class gamemanager : MonoBehaviour
         else if(now_stage == 2)
         {
             enemy2 enemy2_sc = enemy2.GetComponent<enemy2>();
+
+            Stage2Deathcount();
 
             //소환시작
             if(enemy2_isSummon == true)
@@ -101,5 +108,13 @@ public class gamemanager : MonoBehaviour
 
         //활성화 요소
         stage3_background.SetActive(true);
+    }
+
+    //stage2 데스카운트 표시
+    void Stage2Deathcount()
+    {
+        enemy2 enemy2_sc = enemy2.GetComponent<enemy2>();
+
+        stage2_deathcount_text.text = "X "+ enemy2_left;
     }
 }
