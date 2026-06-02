@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class gamemanager : MonoBehaviour
@@ -7,6 +8,23 @@ public class gamemanager : MonoBehaviour
     public GameObject stage1_background;
     public GameObject stage2_background;
     public GameObject stage3_background;
+
+    [Header("Panel")]
+    public GameObject panel_main;
+    public GameObject panel_1to2;
+    public GameObject panel_2to3;
+
+    [Header("Button")]
+    public Button button_start;
+    public Button button_quit;
+
+    [Header("Health UI")]
+    public GameObject health_1;
+    public GameObject health_2;
+    public GameObject health_3;
+    public GameObject health_bad_1;
+    public GameObject health_bad_2;
+    public GameObject health_bad_3;
 
     [Header("Enemys")]
     public GameObject player;
@@ -29,6 +47,10 @@ public class gamemanager : MonoBehaviour
         stage3_background.SetActive(false);
 
         stage2_deathcount_text.text = "";
+
+        //button관련
+        button_start.onClick.AddListener(GameStart);
+        button_quit.onClick.AddListener(GameQuit);
     }
 
     void Update()
@@ -85,7 +107,7 @@ public class gamemanager : MonoBehaviour
     {
         player player_sc = player.GetComponent<player>();
 
-        now_stage++;
+        now_stage = 2;
         player_sc.hp = 3;
 
         //비활성화 요소
@@ -99,7 +121,7 @@ public class gamemanager : MonoBehaviour
     //stage2 -> stage3
     void Stage2toStage3()
     {
-        now_stage++;
+        now_stage = 3;
 
         //비활성화 요소
         //enemy2.SetActive(false);
@@ -113,5 +135,16 @@ public class gamemanager : MonoBehaviour
     void Stage2Deathcount()
     {
         stage2_deathcount_text.text = $"X {15 - Enemy2.death_count}";
+    }
+
+    //메인화면 - 시작버튼
+    void GameStart()
+    {
+        Debug.Log("Start");
+    }
+
+    void GameQuit()
+    {
+        Application.Quit();
     }
 }
