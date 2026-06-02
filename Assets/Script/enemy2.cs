@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class enemy2 : MonoBehaviour
+public class Enemy2 : MonoBehaviour
 {
     [Header("Stat")]
     public int hp = 1;
@@ -29,9 +29,6 @@ public class enemy2 : MonoBehaviour
     public RuntimeAnimatorController enemy2_attack_controller;
     public RuntimeAnimatorController enemy2_hurt_controller;
 
-    [Header("Gamemanager")]
-    public GameObject gamemanager;
-
     [Header("Sound Effect")]
     public AudioClip enemy2_attack_sound;
 
@@ -40,7 +37,7 @@ public class enemy2 : MonoBehaviour
     public GameObject enemy2_prefab;
     public int spawn_max = 15;
     public int spawn_count = 0;
-    public int death_count = 0;
+    public static int death_count = 0;
 
     private Animator animator;
 
@@ -165,12 +162,13 @@ public class enemy2 : MonoBehaviour
             Invoke(nameof(HurtAnimation), 0.21f);
 
             hp--;
+            death_count++;
         }
     }
 
     void HurtAnimation()
     {
-        Destroy(enemy2_prefab);
+        Destroy(gameObject);
         
         Debug.Log("deathcount: " + death_count);
     }

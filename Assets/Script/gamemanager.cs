@@ -19,7 +19,6 @@ public class gamemanager : MonoBehaviour
 
     private int now_stage;
     private bool enemy2_isSummon = true;
-    public int enemy2_left = 15;
 
 
     void Start()
@@ -48,7 +47,7 @@ public class gamemanager : MonoBehaviour
         //---------- 2스테이지 ----------
         else if(now_stage == 2)
         {
-            enemy2 enemy2_sc = enemy2.GetComponent<enemy2>();
+            Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
 
             Stage2Deathcount();
 
@@ -113,8 +112,6 @@ public class gamemanager : MonoBehaviour
     //stage2 데스카운트 표시
     void Stage2Deathcount()
     {
-        enemy2 enemy2_sc = enemy2.GetComponent<enemy2>();
-
-        stage2_deathcount_text.text = "X "+ enemy2_left;
+        stage2_deathcount_text.text = $"X {15 - Enemy2.death_count}";
     }
 }
