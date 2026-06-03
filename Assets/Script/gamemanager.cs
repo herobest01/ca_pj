@@ -9,6 +9,9 @@ public class gamemanager : MonoBehaviour
     public GameObject stage2_background;
     public GameObject stage3_background;
 
+    [Header("Tilemap in Stage3")]
+    public GameObject stage3_tilemap;
+
     [Header("Panel")]
     public GameObject panel_main;
     public GameObject panel_guide;
@@ -40,7 +43,7 @@ public class gamemanager : MonoBehaviour
     public GameObject player;
     public GameObject enemy1;
     public GameObject enemy2;
-    //public GameObject enemy3;
+    public GameObject enemy3;
 
     [Header("Stage2 Death Count")]
     public TextMeshProUGUI stage2_deathcount_text;
@@ -63,9 +66,12 @@ public class gamemanager : MonoBehaviour
 
         player.SetActive(false);
         enemy1.SetActive(false);
+        enemy3.SetActive(false);
 
         stage2_background.SetActive(false);
         stage3_background.SetActive(false);
+
+        stage3_tilemap.SetActive(false);
 
         stage2_deathcount_text.text = "";
 
@@ -74,6 +80,7 @@ public class gamemanager : MonoBehaviour
         button_quit.onClick.AddListener(GameQuit);
         button_start.onClick.AddListener(GameStart);
         button_check_1to2.onClick.AddListener(CheckIn1to2);
+        button_check_2to3.onClick.AddListener(CheckIn2to3);
     }
 
     void Update()
@@ -81,7 +88,6 @@ public class gamemanager : MonoBehaviour
         EnemyAI enemy1_sc = enemy1.GetComponent<EnemyAI>();
 
         //---------- 1스테이지 ----------
-        //enemy1 체력확인
         if(now_stage == 1)
         {
             if(enemy1_sc.hp <= 0 && !isPanelOn)
@@ -119,6 +125,18 @@ public class gamemanager : MonoBehaviour
             }
         }
         //---------- 3스테이지 ----------
+        else if(now_stage == 3)
+        {
+            if(isPanelOn == true)
+            {
+                return;
+            }
+            else if(isPanelOn == false && isCheck == true)
+            {
+                Enemy3 enemy3_sc = enemy3.GetComponent<Enemy3>();
+                enemy3.SetActive(true);
+            }
+        }
 
         //바로가기
         if (Input.GetKey(KeyCode.I))
@@ -157,7 +175,7 @@ public class gamemanager : MonoBehaviour
         player_sc.hp = 3;
 
         //비활성화 요소
-        //enemy2.SetActive(false);
+        enemy2.SetActive(false);
         stage2_background.SetActive(false);
 
         //활성화 요소
@@ -177,22 +195,7 @@ public class gamemanager : MonoBehaviour
         panel_guide.SetActive(true);
     }
 
-    void GameQuit()
-    {
-        Application.Quit();
-    }
-
-    // panel_guide에 있는 '확인'버튼
-    void GameStart()
-    {
-        panel_guide.SetActive(false);
-
-        player.SetActive(true);
-        enemy1.SetActive(true);
-
-        Debug.Log("Start");
-    }
-
+    //panel_1to2에 위치한 버튼
     void CheckIn1to2()
     {
         player player_sc = player.GetComponent<player>();
@@ -208,5 +211,40 @@ public class gamemanager : MonoBehaviour
         
         isPanelOn = false;
         isCheck = true;
+    }
+
+    //panel_1to2에 위치한 버튼
+    void CheckIn2to3()
+    {
+        player player_sc = player.GetComponent<player>();
+        Vector3 i = new Vector3(7.3f, -3.2f, 0f);
+
+        //Time.timeScale = 1;
+
+        panel_2to3.SetActive(false);
+
+        enemy3.SetActive(true);
+
+        player_sc.transform.position = i;
+        
+        isPanelOn = false;
+        isCheck = true;
+    }
+
+
+    void GameQuit()
+    {
+        Application.Quit();
+    }
+
+    // panel_guide에 있는 '확인'버튼
+    void GameStart()
+    {
+        panel_guide.SetActive(false);
+
+        player.SetActive(true);
+        enemy1.SetActive(true);
+
+        Debug.Log("Start");
     }
 }
