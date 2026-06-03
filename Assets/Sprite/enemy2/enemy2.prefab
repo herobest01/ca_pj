@@ -118,12 +118,10 @@ MonoBehaviour:
   enemy2_run_controller: {fileID: 9100000, guid: 624f425d41759da4889b719811cc8cc9, type: 2}
   enemy2_attack_controller: {fileID: 9100000, guid: b05e8f6087595914bb93e9bf2fcc3137, type: 2}
   enemy2_hurt_controller: {fileID: 9100000, guid: 1ccf6c5b0d36a1242b7ed7b635fe6a22, type: 2}
-  gamemanager: {fileID: 0}
   enemy2_attack_sound: {fileID: 8300000, guid: ef18a5a7071e4a54ba749b93057e0864, type: 3}
   enemy2_prefab: {fileID: 4927656776220379210}
   spawn_max: 15
   spawn_count: 0
-  death_count: 0
   isAttack: 0
   distance: 0
 --- !u!70 &5101172007169598960

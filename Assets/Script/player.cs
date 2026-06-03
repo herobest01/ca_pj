@@ -160,7 +160,7 @@ public class player : MonoBehaviour
             SpawnHitbox(); //hitbox생성 & 제거 함수
         }
     }
-
+    
     void HealthShow()
     {
         switch (hp)

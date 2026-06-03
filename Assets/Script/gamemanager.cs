@@ -11,12 +11,22 @@ public class gamemanager : MonoBehaviour
 
     [Header("Panel")]
     public GameObject panel_main;
+    public GameObject panel_guide;
     public GameObject panel_1to2;
     public GameObject panel_2to3;
 
-    [Header("Button")]
-    public Button button_start;
+    [Header("Button in panel_main")]
+    public Button button_guide;
     public Button button_quit;
+
+    [Header("Button in panel_guide")]
+    public Button button_start;
+
+    [Header("Button in panel_1to2")]
+    public Button button_check_1to2;
+
+    [Header("Button in panel_2to3")]
+    public Button button_check_2to3;
 
     [Header("Health UI")]
     public GameObject health_1;
@@ -38,10 +48,21 @@ public class gamemanager : MonoBehaviour
     private int now_stage;
     private bool enemy2_isSummon = true;
 
+    private bool isPanelOn = false;
+    private bool isCheck = false;
+
 
     void Start()
     {
         now_stage = 1;
+
+        panel_main.SetActive(true);
+        panel_guide.SetActive(false);
+        panel_1to2.SetActive(false);
+        panel_2to3.SetActive(false);
+
+        player.SetActive(false);
+        enemy1.SetActive(false);
 
         stage2_background.SetActive(false);
         stage3_background.SetActive(false);
@@ -49,8 +70,10 @@ public class gamemanager : MonoBehaviour
         stage2_deathcount_text.text = "";
 
         //button관련
-        button_start.onClick.AddListener(GameStart);
+        button_guide.onClick.AddListener(GameGuide);
         button_quit.onClick.AddListener(GameQuit);
+        button_start.onClick.AddListener(GameStart);
+        button_check_1to2.onClick.AddListener(CheckIn1to2);
     }
 
     void Update()
@@ -61,31 +84,41 @@ public class gamemanager : MonoBehaviour
         //enemy1 체력확인
         if(now_stage == 1)
         {
-            if(enemy1_sc.hp <= 0)
+            if(enemy1_sc.hp <= 0 && !isPanelOn)
             {
+                now_stage = 2;
+
+                enemy1.SetActive(false);
+
+                panel_1to2.SetActive(true);
+
+                isPanelOn = true;
                 Stage1toStage2();
             }
         }
         //---------- 2스테이지 ----------
         else if(now_stage == 2)
         {
-            Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
-
-            Stage2Deathcount();
-
-            //소환시작
-            if(enemy2_isSummon == true)
+            if(isPanelOn == true)
             {
-                enemy2_sc.Summon();
+               return; 
             }
-            enemy2_isSummon = false;
-        }
+            else if(isPanelOn == false && isCheck == true)
+            {
+                Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
+                enemy2.SetActive(true);
 
-        //변수 확인
-        if (Input.GetKey(KeyCode.P))
-        {
-            Debug.Log("Now stage: " + now_stage);
+                Stage2Deathcount();
+
+                //소환시작
+                if(enemy2_isSummon == true)
+                {
+                    enemy2_sc.Summon();
+                }
+                enemy2_isSummon = false;
+            }
         }
+        //---------- 3스테이지 ----------
 
         //바로가기
         if (Input.GetKey(KeyCode.I))
@@ -106,12 +139,9 @@ public class gamemanager : MonoBehaviour
     void Stage1toStage2()
     {
         player player_sc = player.GetComponent<player>();
-
-        now_stage = 2;
         player_sc.hp = 3;
 
         //비활성화 요소
-        enemy1.SetActive(false);
         stage1_background.SetActive(false);
 
         //활성화 요소
@@ -121,7 +151,10 @@ public class gamemanager : MonoBehaviour
     //stage2 -> stage3
     void Stage2toStage3()
     {
+        player player_sc = player.GetComponent<player>();
+        
         now_stage = 3;
+        player_sc.hp = 3;
 
         //비활성화 요소
         //enemy2.SetActive(false);
@@ -137,14 +170,43 @@ public class gamemanager : MonoBehaviour
         stage2_deathcount_text.text = $"X {15 - Enemy2.death_count}";
     }
 
-    //메인화면 - 시작버튼
-    void GameStart()
+    //panel_main -> panel_guide
+    void GameGuide()
     {
-        Debug.Log("Start");
+        panel_main.SetActive(false);
+        panel_guide.SetActive(true);
     }
 
     void GameQuit()
     {
         Application.Quit();
+    }
+
+    // panel_guide에 있는 '확인'버튼
+    void GameStart()
+    {
+        panel_guide.SetActive(false);
+
+        player.SetActive(true);
+        enemy1.SetActive(true);
+
+        Debug.Log("Start");
+    }
+
+    void CheckIn1to2()
+    {
+        player player_sc = player.GetComponent<player>();
+        Vector3 i = new Vector3(7.3f, -3.2f, 0f);
+
+        //Time.timeScale = 1;
+
+        panel_1to2.SetActive(false);
+
+        enemy2.SetActive(true);
+
+        player_sc.transform.position = i;
+        
+        isPanelOn = false;
+        isCheck = true;
     }
 }
