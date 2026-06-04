@@ -102,7 +102,7 @@ public class Enemy2 : MonoBehaviour
     {
         for(int spawn_count=0; spawn_count < spawn_max; spawn_count++)
         {
-            Invoke(nameof(SummonStart), 2.5f * spawn_count);
+            Invoke(nameof(SummonStart), 1.5f * spawn_count);
         }
     }
     void SummonStart()

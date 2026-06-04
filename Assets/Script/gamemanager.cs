@@ -68,6 +68,7 @@ public class gamemanager : MonoBehaviour
         enemy1.SetActive(false);
         enemy3.SetActive(false);
 
+        stage1_background.SetActive(true);
         stage2_background.SetActive(false);
         stage3_background.SetActive(false);
 
@@ -105,13 +106,14 @@ public class gamemanager : MonoBehaviour
         //---------- 2스테이지 ----------
         else if(now_stage == 2)
         {
+            Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
+
             if(isPanelOn == true)
             {
                return; 
             }
             else if(isPanelOn == false && isCheck == true)
             {
-                Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
                 enemy2.SetActive(true);
 
                 Stage2Deathcount();
@@ -122,6 +124,14 @@ public class gamemanager : MonoBehaviour
                     enemy2_sc.Summon();
                 }
                 enemy2_isSummon = false;
+            }
+
+            if(Enemy2.death_count >= 15)
+            {
+                isPanelOn = true;
+                enemy2.SetActive(false);
+                Stage2toStage3();
+                panel_2to3.SetActive(true);
             }
         }
         //---------- 3스테이지 ----------
@@ -175,11 +185,11 @@ public class gamemanager : MonoBehaviour
         player_sc.hp = 3;
 
         //비활성화 요소
-        enemy2.SetActive(false);
         stage2_background.SetActive(false);
 
         //활성화 요소
         stage3_background.SetActive(true);
+        stage3_tilemap.SetActive(true);
     }
 
     //stage2 데스카운트 표시
@@ -201,8 +211,6 @@ public class gamemanager : MonoBehaviour
         player player_sc = player.GetComponent<player>();
         Vector3 i = new Vector3(7.3f, -3.2f, 0f);
 
-        //Time.timeScale = 1;
-
         panel_1to2.SetActive(false);
 
         enemy2.SetActive(true);
@@ -217,9 +225,9 @@ public class gamemanager : MonoBehaviour
     void CheckIn2to3()
     {
         player player_sc = player.GetComponent<player>();
-        Vector3 i = new Vector3(7.3f, -3.2f, 0f);
+        Vector3 i = new Vector3(5.75f, -2.94f, 0f);
 
-        //Time.timeScale = 1;
+        now_stage = 3;
 
         panel_2to3.SetActive(false);
 

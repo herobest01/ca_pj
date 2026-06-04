@@ -15,8 +15,8 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Attack")]
     //공격관련수치
-    public float attackCoolTime = 1f;
-    public int damage = 1;
+    private float attackCoolTime = 4.5f;
+    private int damage = 1;
     private float lastAttackTime;
     private float attackDuration = 1f;
 
@@ -132,7 +132,6 @@ public class EnemyAI : MonoBehaviour
         player player = target.GetComponent<player>();
 
         //플레이어와의 거리가 정지거리보다 가까운 경우
-        //플레이어 hp--
         distance = Vector3.Distance(transform.position, target.position);
 
         if(distance < stopDistance)
