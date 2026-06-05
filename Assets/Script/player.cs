@@ -27,8 +27,6 @@ public class player : MonoBehaviour
     public Vector3 hitbox_scale;
     public Vector3 hitbox_scale_flip;
 
-    
-
     public bool spawn_hitbox = false;
 
     private SpriteRenderer spriteRenderer;
@@ -365,6 +363,22 @@ public class player : MonoBehaviour
 
         //GameObject spawned_hitbox_prefab = Instantiate(hitbox, hitbox_pos, Quaternion.identity);
         //Destroy(spawned_hitbox_prefab, 0.5f);
+    }
+
+    //Enemy3 공격으로인한 데미지 처리
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Enemy3_hitbox"))
+        {
+            //animator.runtimeAnimatorController = player_hurt_controller;
+            Invoke(nameof(HurtAnimation), 1f);
+
+            hp--;
+        }
+    }
+    void HurtAnimation()
+    {
+        
     }
 }
 

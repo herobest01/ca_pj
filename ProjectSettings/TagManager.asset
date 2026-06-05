@@ -6,6 +6,7 @@ TagManager:
   tags:
   - attack_hitbox
   - Enemy1
+  - Enemy3_hitbox
   layers:
   - Default
   - TransparentFX

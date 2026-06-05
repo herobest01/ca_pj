@@ -10,15 +10,23 @@ public class Enemy3 : MonoBehaviour
     public Transform target;
 
     [Header("Movement")]
-    public float moveSpeed = 1.7f;
-    private float stopDistance = 1.3f;
+    //public float moveSpeed = 1.7f;
+    private float stopDistance = 1.5f;
 
     [Header("Attack")]
     //공격관련수치
-    public float attack_near_cooltime = 10f;
+    private float attack_near_cooltime = 10f;
+    private float attack_range_cooltime = 10f;
     private float attackDuration = 3f;
     public int damage = 1;
     private float last_attack_near_time;
+    private float last_attack_range_time;
+
+    [Header("Range Attack")]
+    public GameObject enemy3_attack_right_hitbox;
+    public GameObject enemy3_attack_left_hitbox;
+    public GameObject enemy3_attack_right_warning;
+    public GameObject enemy3_attack_left_warning;
 
     [Header("Damage by player")]
     public GameObject damage_hitbox;
@@ -26,7 +34,7 @@ public class Enemy3 : MonoBehaviour
     [Header("Animation Controller")]
     public RuntimeAnimatorController enemy3_idle_controller;
     public RuntimeAnimatorController enemy3_attack_near_controller;
-    //public RuntimeAnimatorController enemy3_hurt_controller;
+    public RuntimeAnimatorController enemy3_hurt_controller;
 
     private Animator animator;
     
@@ -40,9 +48,12 @@ public class Enemy3 : MonoBehaviour
 
     private bool isWatchRight;
     private bool isAttack = false;
+    private bool now_attack_right = true;
 
     //hurt controller
     private bool isHurt = false;
+
+    private Vector3 position_fixed = new Vector3(0.27f, -2.77f, 0f);
 
     void Start()
     {
@@ -60,6 +71,9 @@ public class Enemy3 : MonoBehaviour
     void Update()
     {
         distance = Vector3.Distance(transform.position, target.position);
+
+        //위치 고정
+        transform.position = position_fixed;
 
         if(target.transform.position.x > 0)
         {
@@ -81,11 +95,7 @@ public class Enemy3 : MonoBehaviour
 
         if (distance > stopDistance)
         {
-            isAttack = false;
-
-            //transform.position += direction * moveSpeed * Time.deltaTime;
-
-            //animator.runtimeAnimatorController = enemy3_run_controller;
+            AttackRange();
         }
         else
         {
@@ -108,7 +118,7 @@ public class Enemy3 : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(enemy3_attack_sound, transform.position);
             
-            Invoke(nameof(AttackCount), 0.3f);
+            Invoke(nameof(AttackCount), 1f);
         }
         else
         {
@@ -135,5 +145,60 @@ public class Enemy3 : MonoBehaviour
         {
             player.hp--;
         }
+    }
+
+    //player가 stopdistance 밖에 있을 때
+    void AttackRange()
+    {
+        if (Time.time - last_attack_range_time < attack_range_cooltime) return;
+
+        last_attack_range_time = Time.time;
+
+        if (now_attack_right == true)
+        {
+            GameObject attack_right_warning_prefab = Instantiate(enemy3_attack_right_warning);
+
+            Invoke(nameof(SpawnRightAttack), 3f);
+
+            Destroy(attack_right_warning_prefab, 3f);
+        }
+        else
+        {
+            GameObject attack_left_warning_prefab = Instantiate(enemy3_attack_left_warning);
+
+            Invoke(nameof(SpawnLeftAttack), 3f);
+
+            Destroy(attack_left_warning_prefab, 3f);
+        }
+        now_attack_right = false;
+    }
+
+    void SpawnRightAttack()
+    {
+        GameObject attack_right_hitbox_prefab = Instantiate(enemy3_attack_right_hitbox);
+
+        Destroy(attack_right_hitbox_prefab, 3f);
+    }
+    void SpawnLeftAttack()
+    {
+        GameObject attack_left_hitbox_prefab = Instantiate(enemy3_attack_left_hitbox);
+
+        Destroy(attack_left_hitbox_prefab, 3f);
+    }
+
+    //플레이어 공격으로인한 데미지 처리
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("attack_hitbox"))
+        {
+            animator.runtimeAnimatorController = enemy3_hurt_controller;
+            Invoke(nameof(HurtAnimation), 0.2f);
+
+            hp--;
+        }
+    }
+    void HurtAnimation()
+    {
+        Debug.Log("Enemy3: " + hp);
     }
 }

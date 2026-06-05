@@ -165,7 +165,6 @@ public class Enemy2 : MonoBehaviour
             death_count++;
         }
     }
-
     void HurtAnimation()
     {
         Destroy(gameObject);

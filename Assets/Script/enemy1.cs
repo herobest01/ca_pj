@@ -15,7 +15,7 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Attack")]
     //공격관련수치
-    private float attackCoolTime = 4.5f;
+    private float attackCoolTime = 2.5f;
     private int damage = 1;
     private float lastAttackTime;
     private float attackDuration = 1f;

@@ -17,6 +17,8 @@ public class gamemanager : MonoBehaviour
     public GameObject panel_guide;
     public GameObject panel_1to2;
     public GameObject panel_2to3;
+    public GameObject panel_gameover;
+    public GameObject panel_gameclear;
 
     [Header("Button in panel_main")]
     public Button button_guide;
@@ -30,6 +32,13 @@ public class gamemanager : MonoBehaviour
 
     [Header("Button in panel_2to3")]
     public Button button_check_2to3;
+
+    [Header("Button in panel_gameover")]
+    public Button button_retry;
+    public Button button_quit_gameover;
+
+    [Header("Button in panel_gameclear")]
+    public Button button_quit_gameclear;
 
     [Header("Health UI")]
     public GameObject health_1;
@@ -53,6 +62,7 @@ public class gamemanager : MonoBehaviour
 
     private bool isPanelOn = false;
     private bool isCheck = false;
+    private bool isGameover = false;
 
 
     void Start()
@@ -63,6 +73,8 @@ public class gamemanager : MonoBehaviour
         panel_guide.SetActive(false);
         panel_1to2.SetActive(false);
         panel_2to3.SetActive(false);
+        panel_gameover.SetActive(false);
+        panel_gameclear.SetActive(false);
 
         player.SetActive(false);
         enemy1.SetActive(false);
@@ -82,6 +94,9 @@ public class gamemanager : MonoBehaviour
         button_start.onClick.AddListener(GameStart);
         button_check_1to2.onClick.AddListener(CheckIn1to2);
         button_check_2to3.onClick.AddListener(CheckIn2to3);
+        button_quit.onClick.AddListener(GameQuit);
+        button_retry.onClick.AddListener(GameRetry);
+        button_quit_gameclear.onClick.AddListener(GameQuit);
     }
 
     void Update()
@@ -137,18 +152,34 @@ public class gamemanager : MonoBehaviour
         //---------- 3스테이지 ----------
         else if(now_stage == 3)
         {
+            Enemy3 enemy3_sc = enemy3.GetComponent<Enemy3>();
+
             if(isPanelOn == true)
             {
                 return;
             }
             else if(isPanelOn == false && isCheck == true)
             {
-                Enemy3 enemy3_sc = enemy3.GetComponent<Enemy3>();
+                
                 enemy3.SetActive(true);
+            }
+
+            if(enemy3_sc.hp <= 0)
+            {
+                isPanelOn = true;
+                GameClear();
             }
         }
 
-        //바로가기
+        player player_sc = player.GetComponent<player>();
+
+        if(player_sc.hp <= 0)
+        {
+            isGameover = true;
+            Gameover();
+        }
+
+        /*바로가기
         if (Input.GetKey(KeyCode.I))
         {
             now_stage = 1;
@@ -161,6 +192,7 @@ public class gamemanager : MonoBehaviour
         {
             now_stage = 3;
         }
+        */
     }
 
     //stage1 -> stage2
@@ -239,6 +271,68 @@ public class gamemanager : MonoBehaviour
         isCheck = true;
     }
 
+    //게임오버처리
+    void Gameover()
+    {
+        player.SetActive(false);
+        panel_gameover.SetActive(true);
+
+        if(now_stage == 1)
+        {
+            enemy1.SetActive(false);
+        }
+        else if(now_stage == 2)
+        {
+            enemy2.SetActive(false);
+        }
+        else if(now_stage == 3)
+        {
+            enemy3.SetActive(false);
+        }
+    }
+
+    //게임오버 재도전 버튼
+    void GameRetry()
+    {
+        player player_sc = player.GetComponent<player>();
+        player_sc.hp = 3;
+        player.SetActive(true);
+        panel_gameover.SetActive(false);
+
+        isGameover = false;
+
+        if(now_stage == 1)
+        {
+            EnemyAI enemy1_sc = enemy1.GetComponent<EnemyAI>();
+            enemy1_sc.hp = 15;
+
+            Vector3 player_i = new Vector3(-6.0f, -2.8f, 0f);
+            Vector3 enemy1_i = new Vector3(3.8f, -2.8f, 0f);
+            player.transform.position = player_i;
+            enemy1.transform.position = enemy1_i;
+
+            enemy1.SetActive(true);
+        }
+        else if(now_stage == 2)
+        {
+            Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
+            
+            Enemy2.death_count = 0;
+            enemy2_sc.spawn_count = 0;
+        }
+        else if(now_stage == 3)
+        {
+            Enemy3 enemy3_sc = enemy3.GetComponent<Enemy3>();
+            enemy3_sc.hp = 40;
+        }
+    }
+
+    void GameClear()
+    {
+        enemy3.SetActive(false);
+        panel_gameclear.SetActive(true);
+        
+    }
 
     void GameQuit()
     {
