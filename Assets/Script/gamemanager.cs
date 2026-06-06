@@ -54,15 +54,15 @@ public class gamemanager : MonoBehaviour
     public GameObject enemy2;
     public GameObject enemy3;
 
-    [Header("Stage2 Death Count")]
-    public TextMeshProUGUI stage2_deathcount_text;
+    [Header("Canvas Text")]
+    public TextMeshProUGUI canvas_text;
 
     private int now_stage;
     private bool enemy2_isSummon = true;
 
     private bool isPanelOn = false;
     private bool isCheck = false;
-    private bool isGameover = false;
+    public bool isGameover = false;
 
 
     void Start()
@@ -86,7 +86,7 @@ public class gamemanager : MonoBehaviour
 
         stage3_tilemap.SetActive(false);
 
-        stage2_deathcount_text.text = "";
+        canvas_text.text = "";
 
         //button관련
         button_guide.onClick.AddListener(GameGuide);
@@ -97,15 +97,19 @@ public class gamemanager : MonoBehaviour
         button_quit.onClick.AddListener(GameQuit);
         button_retry.onClick.AddListener(GameRetry);
         button_quit_gameclear.onClick.AddListener(GameQuit);
+
+        Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
+        enemy2_sc.gamemanager = this;
     }
 
     void Update()
     {
-        EnemyAI enemy1_sc = enemy1.GetComponent<EnemyAI>();
-
         //---------- 1스테이지 ----------
         if(now_stage == 1)
         {
+            EnemyAI enemy1_sc = enemy1.GetComponent<EnemyAI>();
+            canvas_text.text = "Enemy HP: " + enemy1_sc.hp;
+
             if(enemy1_sc.hp <= 0 && !isPanelOn)
             {
                 now_stage = 2;
@@ -153,6 +157,7 @@ public class gamemanager : MonoBehaviour
         else if(now_stage == 3)
         {
             Enemy3 enemy3_sc = enemy3.GetComponent<Enemy3>();
+            canvas_text.text = "Enemy HP: " + enemy3_sc.hp;
 
             if(isPanelOn == true)
             {
@@ -160,7 +165,6 @@ public class gamemanager : MonoBehaviour
             }
             else if(isPanelOn == false && isCheck == true)
             {
-                
                 enemy3.SetActive(true);
             }
 
@@ -173,7 +177,7 @@ public class gamemanager : MonoBehaviour
 
         player player_sc = player.GetComponent<player>();
 
-        if(player_sc.hp <= 0)
+        if(player_sc.hp <= 0 && isGameover == false)
         {
             isGameover = true;
             Gameover();
@@ -227,7 +231,7 @@ public class gamemanager : MonoBehaviour
     //stage2 데스카운트 표시
     void Stage2Deathcount()
     {
-        stage2_deathcount_text.text = $"X {15 - Enemy2.death_count}";
+        canvas_text.text = $"X {15 - Enemy2.death_count}";
     }
 
     //panel_main -> panel_guide
@@ -241,7 +245,7 @@ public class gamemanager : MonoBehaviour
     void CheckIn1to2()
     {
         player player_sc = player.GetComponent<player>();
-        Vector3 i = new Vector3(7.3f, -3.2f, 0f);
+        Vector3 i = new Vector3(1f, -3.2f, 0f);
 
         panel_1to2.SetActive(false);
 
@@ -274,7 +278,7 @@ public class gamemanager : MonoBehaviour
     //게임오버처리
     void Gameover()
     {
-        player.SetActive(false);
+        //player.SetActive(false);
         panel_gameover.SetActive(true);
 
         if(now_stage == 1)
@@ -315,10 +319,17 @@ public class gamemanager : MonoBehaviour
         }
         else if(now_stage == 2)
         {
+            GameObject[] enemy2_prefabs = GameObject.FindGameObjectsWithTag("Enemy2");
             Enemy2 enemy2_sc = enemy2.GetComponent<Enemy2>();
+
+            foreach (GameObject i in enemy2_prefabs)
+            {
+                Destroy(i);
+            }
             
+            enemy2_sc.spawn_count = 15;
             Enemy2.death_count = 0;
-            enemy2_sc.spawn_count = 0;
+            enemy2_sc.Summon();
         }
         else if(now_stage == 3)
         {

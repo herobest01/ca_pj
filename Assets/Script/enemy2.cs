@@ -45,6 +45,9 @@ public class Enemy2 : MonoBehaviour
 
     public float distance;
 
+    [Header("GamaManager")]
+    public gamemanager gamemanager;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -102,12 +105,27 @@ public class Enemy2 : MonoBehaviour
     {
         for(int spawn_count=0; spawn_count < spawn_max; spawn_count++)
         {
-            Invoke(nameof(SummonStart), 1.5f * spawn_count);
+            gamemanager gamemanager_sc = gamemanager.GetComponent<gamemanager>();
+            if(gamemanager_sc.isGameover == true) return;
+
+            if(spawn_count % 2 == 0)
+            {
+                Invoke(nameof(SummonStart_left), 1.5f * spawn_count);
+            }
+            else
+            {
+                Invoke(nameof(SummonStart_right), 1.5f * spawn_count);
+            }
         }
     }
-    void SummonStart()
+    void SummonStart_left()
     {
         Vector3 spawnPos = new Vector3(-7.7f, -3f, 0f);
+        Instantiate(enemy2_prefab, spawnPos, Quaternion.identity);
+    }
+    void SummonStart_right()
+    {
+        Vector3 spawnPos = new Vector3(7.7f, -3f, 0f);
         Instantiate(enemy2_prefab, spawnPos, Quaternion.identity);
     }
 

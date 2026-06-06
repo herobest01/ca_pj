@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5269879343614254758}
   m_Layer: 0
   m_Name: enemy2
-  m_TagString: Untagged
+  m_TagString: Enemy2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4927656776220379210}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 118.23105, y: -41.010452, z: 0}
+  m_LocalPosition: {x: -1.06306, y: -6.2495413, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,9 +121,10 @@ MonoBehaviour:
   enemy2_attack_sound: {fileID: 8300000, guid: ef18a5a7071e4a54ba749b93057e0864, type: 3}
   enemy2_prefab: {fileID: 4927656776220379210}
   spawn_max: 15
-  spawn_count: 0
+  spawn_count: 15
   isAttack: 0
   distance: 0
+  gamemanager: {fileID: 0}
 --- !u!70 &5101172007169598960
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

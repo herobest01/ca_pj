@@ -11,11 +11,11 @@ public class Enemy3 : MonoBehaviour
 
     [Header("Movement")]
     //public float moveSpeed = 1.7f;
-    private float stopDistance = 1.5f;
+    private float stopDistance = 1.7f;
 
     [Header("Attack")]
     //공격관련수치
-    private float attack_near_cooltime = 10f;
+    private float attack_near_cooltime = 5f;
     private float attack_range_cooltime = 10f;
     private float attackDuration = 3f;
     public int damage = 1;
@@ -184,6 +184,7 @@ public class Enemy3 : MonoBehaviour
         GameObject attack_left_hitbox_prefab = Instantiate(enemy3_attack_left_hitbox);
 
         Destroy(attack_left_hitbox_prefab, 3f);
+        now_attack_right = true;
     }
 
     //플레이어 공격으로인한 데미지 처리
@@ -192,7 +193,7 @@ public class Enemy3 : MonoBehaviour
         if(collision.CompareTag("attack_hitbox"))
         {
             animator.runtimeAnimatorController = enemy3_hurt_controller;
-            Invoke(nameof(HurtAnimation), 0.2f);
+            Invoke(nameof(HurtAnimation), 0.1f);
 
             hp--;
         }
